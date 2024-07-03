@@ -5,6 +5,7 @@ import {
   CallStatsButton,
   PaginatedGridLayout,
   SpeakerLayout,
+  useCall,
 } from "@stream-io/video-react-sdk";
 import React, { useState } from "react";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "./ui/dropdown-menu";
@@ -20,6 +21,8 @@ const MeetingRoom = ({
   const [layout, setLayout] = useState("speaker-left");
 
   const [showParticipants, setShowParticipants] = useState(false);
+
+  const call = useCall();
 
   const CallLayout = () => {
     switch (layout) {
@@ -47,7 +50,10 @@ const MeetingRoom = ({
         </div>
       </div>
       <div className="fixed bottom-5 flex w-full items-center justify-center gap-5">
-        <CallControls onLeave={() => setIsSetupComplete(false)} />
+        <CallControls onLeave={() => {
+          call?.leave()
+          setIsSetupComplete(false)
+        }} />
 
         <DropdownMenu>
           <div className="flex items-center">
